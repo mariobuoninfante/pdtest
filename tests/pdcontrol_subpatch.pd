@@ -1,0 +1,6 @@
+#N canvas 0 23 450 300 12;
+#X obj 158 72 pdcontrol;
+#X obj 158 16 inlet;
+#X obj 158 126 outlet;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;

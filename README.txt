@@ -27,6 +27,27 @@ where "platform" is:
 
 
 
+SUITE AND TESTS
+---
+A suite is a text file called "suite.txt" that contains a list of all the tests to run.
+Each field (aka test) consists of the test name without extension (ie mytest_t) - see next section about tests for more info about the different file extensions.
+
+Tests are pairs of Pd patches and text files sharing the same name but different extension (.pd and .txt).
+For example "mytest_t" would be composed by the following files, placed in the /tests folder:
+- mytest_t.pd - actual Pd patch to test
+- mytest_t.txt - text file containing the expected results
+
+The text file (ie mytest_t.txt) is a list of expected messages received from the correspondent Pd patch (ie mytest_t.pd).
+It has 2 mandatory fields:
+- teststart
+- testend
+
+In the Pd patch (ie mytest_t.pd) results are passed to Lua via [stdout -cr].
+
+
+
+
+
 INFO
 ---
 The Pd patch "test.pd" will automatically quit Pd after few seconds, if you want to edit it you can do one of the following:

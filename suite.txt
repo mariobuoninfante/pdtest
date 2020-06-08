@@ -1,0 +1,3 @@
+-- this must contain the names of all the tests in /tests
+pdcontrol_t
+inlet~_t
