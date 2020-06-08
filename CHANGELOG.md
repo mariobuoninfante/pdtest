@@ -1,6 +1,7 @@
 2020-06-08
 ---
 # ADDED
+- added EXIT subpatch to be used in all test patches	
 - /test folder containing few test examples
 - gitignore (just for emacs for now)
 - code ported

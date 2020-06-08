@@ -50,7 +50,7 @@ In the Pd patch (ie mytest_t.pd) results are passed to Lua via [stdout -cr].
 
 INFO
 ---
-The Pd patch "test.pd" will automatically quit Pd after few seconds, if you want to edit it you can do one of the following:
+All the test patches will automatically quit Pd after few seconds, if you want to edit it you can do one of the following:
 
 Method 1
   - open the patch in a text editor
@@ -59,6 +59,6 @@ Method 1
 
 Method 2
   - launch the patch from terminal using the following command: 
-    > pd -send "autoexitoff 1;" test.pd
-
+    > pd -send "autoexitoff 1;" mytest_t.pd
+    where "mytest_t.pd" is the name of the patch to edit
 
