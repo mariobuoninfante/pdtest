@@ -6,6 +6,6 @@
 - code ported
 
 # CHANGED
-- README.md added info about SUITE and TESTS	
+- README.txt - added info about SUITE and TESTS	
 - pdtest.lua contains run() that actually runs the tests
 - utils.lua is now pdtest.lua

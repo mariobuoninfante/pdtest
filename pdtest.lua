@@ -84,7 +84,7 @@ end
 
 
 function pdtest.get_fields(filename)
-   -- get test expected results from expected.txt file
+   -- get test expected results from test .txt file
 
    local file
    
