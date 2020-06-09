@@ -47,7 +47,7 @@ All the other fields must be placed in between these 2 (see text files in /tests
 The order of the fields in the .txt file should match the order of execution in the .pd file.
 That means if the Pd patch sends the following messages:
 
-1.teststart
+1. teststart
 2. append
 3. float 23
 4. banana
