@@ -1,12 +1,14 @@
 	2020-06-09
 	---
 	#ADDED
+	- added possibility to pass flags (not all of them) to Pd
 	- pdtest.lua - generate basic log.txt
 	- added /logs folder
 	- [list] test
 	- main.lua - look for arg[1] before running any test
 	
 	#CHANGED
+	- logs - now capture date, platform and flags
 	- main.lua - now passes table containing tests to pdtest.lua
 	- pdtest.lua - now prints expected vs actual when test fails
 	- added failed_t - failing test

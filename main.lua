@@ -5,6 +5,7 @@ if arg[1] == nil then
    os.exit()
 end
 
+
 -- the OS in use
 local platform = arg[1]
 
@@ -15,6 +16,14 @@ print("TESTS:")
 for k, v in ipairs(tests) do print(k, v) end
 print()
 
+-- in case there are flags to pass to the test
+local flags = {}
+if #arg > 1 then
+   for i = 2, #arg do
+      table.insert(flags, arg[i])
+      print(arg[i])
+   end
+end
 
-pdtest.run(tests, platform, timestamp)
+pdtest.run(tests, platform, flags)
 

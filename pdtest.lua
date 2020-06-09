@@ -2,15 +2,35 @@ local pdtest = {}
 
 
 
-function pdtest.run(tests, platform)
+function pdtest.run(tests, platform, flags)
+
+   flags = flags or {}
+
+   -- check flags to pass to Pd 
+   local pdflags = "-nogui -gui -nomidi -stderr -noaudio -r" 
+   local flags_str = ""
+   if #flags == 0 then
+      flags_str = "-nogui -stderr "
+   else
+      -- surely not the most elegant way to do this
+      for k, v in ipairs(flags) do
+	 if string.find(pdflags, v) ~= nil then
+	    flags_str = v .. " "
+	 end
+      end
+      if flags_str == "" then flags_str = "-nogui -stderr " end
+   end
+
+   
+   local pd
    local timestamp = os.date("%Y%m%d_%H_%M_%S")   
    local log = io.open("./logs/log_" .. timestamp .. ".txt", "w")   
-   local pd
-
+   log:write("DATE: " .. os.date("%Y-%m-%d - %H:%M:%S") .. "\nPLATFORM: " .. platform .. "\nFLAGS: " .. flags_str .. "\n")
+   
    for k, testname in ipairs(tests) do
       local patchname = "./tests/" .. testname .. ".pd"
-      local cmdlinux = "pd -nogui -stderr " .. patchname
-      local cmdmac = "/Applications/Pd-0.51-0.app/Contents/Resources/bin/pd -nogui -stderr " .. patchname
+      local cmdlinux = "pd " .. flags_str ..patchname
+      local cmdmac = "/Applications/Pd-0.51-0.app/Contents/Resources/bin/pd " .. flags_str .. patchname
 
       log:write(string.format("\n---\nTEST: %s\n---\n", testname))
       
