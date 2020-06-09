@@ -13,7 +13,7 @@
 #X obj 23 137 metro 25;
 #X obj 104 312 stdout -cr;
 #X obj 222 139 stdout -cr;
-#X msg 222 109 nonaudio;
+#X msg 222 109 nonaudio2;
 #X connect 0 0 2 0;
 #X connect 0 1 1 0;
 #X connect 1 0 3 0;

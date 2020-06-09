@@ -1,10 +1,15 @@
 	2020-06-09
 	---
 	#ADDED
+	- pdtest.lua - generate basic log.txt
+	- added /logs folder
 	- [list] test
 	- main.lua - look for arg[1] before running any test
 	
 	#CHANGED
+	- main.lua - now passes table containing tests to pdtest.lua
+	- pdtest.lua - now prints expected vs actual when test fails
+	- added failed_t - failing test
 	- README.txt - added more info about the test architecture
 	- pd test patches - placed all abstractions in /modules
 	- pdtest.lua - now receives an arg instead of using arg[1]

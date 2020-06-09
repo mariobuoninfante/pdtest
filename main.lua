@@ -16,7 +16,5 @@ for k, v in ipairs(tests) do print(k, v) end
 print()
 
 
-for k, v in ipairs(tests) do
-   pdtest.run(v, platform)
-end
+pdtest.run(tests, platform, timestamp)
 
