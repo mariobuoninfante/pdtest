@@ -2,7 +2,7 @@ local pdtest = {}
 
 
 
-function pdtest.run(testname)
+function pdtest.run(testname, platform)
    testname = testname or "test"
    local patchname = "./tests/" .. testname .. ".pd"
    local cmdlinux = "pd -nogui -stderr " .. patchname
@@ -14,11 +14,11 @@ function pdtest.run(testname)
    
    -- io.popen() is system depedent
    -- an alternative would be os.execute("cmd > ./log.txt") and then check the log
-   if arg[1] == "linux" then
+   if platform == "linux" then
       pd = assert(io.popen(cmdlinux))
-   elseif arg[1] == "macos" then
+   elseif platform == "macos" then
       pd = assert(io.popen(cmdmac))
-   elseif arg[1] == "win" then
+   elseif platform == "win" then
       print("well, we're not equipped for this yet!")
       os.exit()
    else
@@ -29,7 +29,7 @@ function pdtest.run(testname)
    -- expected msg from Pd
    local expected = pdtest.get_fields("./tests/" .. testname .. ".txt")
 
-   -- where we collect what Pd actually sent us
+   -- where we collect what Pd actually sends us
    local actual = {}
 
 
@@ -95,15 +95,16 @@ function pdtest.get_fields(filename)
    end
    
    local expected = {}
-   local line = ""
+   local line = "--"
    while line ~= nil do
       -- skip comments
-      if string.sub(line, 1, 2) ~= "--" and line ~= "" then
+      if string.sub(line, 1, 2) ~= "--" then
 	 table.insert(expected, line)
       end
       
       if line == "testend" then break end
-      
+
+      -- we skip newline and return
       line = file:read("l")
    end
 

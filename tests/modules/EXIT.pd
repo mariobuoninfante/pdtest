@@ -1,4 +1,4 @@
-#N canvas 0 23 450 300 12;
+#N canvas 0 23 618 300 12;
 #X obj 147 44 inlet;
 #X msg 147 98 quit;
 #X obj 147 216 s pd;
@@ -6,6 +6,8 @@
 #X obj 270 71 r autoexitoff;
 #X obj 270 95 sel 1;
 #X msg 270 119 0;
+#X text 268 17 it is possible to pass "autoexitoff 1" \; to Pd (via
+-send from termina) to avoid \; having the patch quitting Pd \;;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 3 0 2 0;

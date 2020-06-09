@@ -1,4 +1,5 @@
 #N canvas 345 144 769 487 12;
+#X declare -path ./modules;
 #X obj 36 69 loadbang;
 #N canvas 0 23 450 354 TEST 0;
 #X obj 104 40 inlet~ fwd;
@@ -41,6 +42,7 @@
 \; and still works with audio \; \; Msg from Pd to Lua \; 1: teststart
 \; 2: nonaudio \; 3: audio \; 4: testend \;;
 #X obj 35 389 EXIT;
+#X obj 430 234 declare -path ./modules;
 #X connect 0 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 9 0;

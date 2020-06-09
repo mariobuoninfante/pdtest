@@ -1,0 +1,30 @@
+-- I'm a comment
+teststart
+-- LIST APPEND
+list left1 right1
+list left2 right2
+-- LIST PREPEND
+list right3 left3
+list right4 left4
+-- LIST SPLIT
+list 3 4
+list 0 1 2
+list 5
+-- LIST TRIM
+one two three
+-- LIST LENGTH
+float 0
+float 5
+float 3
+-- LIST FROMSYMBOL
+list 116 101 115 116
+-- LIST TOSYMBOL
+symbol test
+-- LIST STORE
+store 0
+store 1
+store 2
+list this is
+list 0 1 2 3 4
+list foo bar
+testend

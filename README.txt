@@ -42,6 +42,11 @@ It has 2 mandatory fields:
 - teststart
 - testend
 
+All the other fields must be placed in between these 2 (see text files in /tests for some example).
+
+Both "suite.txt" and the test files (.txt) can't contain "newline" and "carriage return" ("\n" and "\r") due to the way that they are parsed.
+Comments are allowed and start with "--" (ie "-- This is a comment!").
+
 In the Pd patch (ie mytest_t.pd) results are passed to Lua via [stdout -cr].
 
 
