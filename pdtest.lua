@@ -7,15 +7,17 @@ function pdtest.run(tests, platform, flags)
    flags = flags or {}
 
    -- check flags to pass to Pd 
-   local pdflags = "-nogui -gui -nomidi -stderr -noaudio -r" 
+   local pdflags = {"-nogui", "-gui", "-nomidi", "-stderr", "-noaudio", "-r"} 
    local flags_str = ""
    if #flags == 0 then
       flags_str = "-nogui -stderr "
    else
       -- surely not the most elegant way to do this
       for k, v in ipairs(flags) do
-	 if string.find(pdflags, v) ~= nil then
-	    flags_str = v .. " "
+	 for key, val in ipairs(pdflags) do
+	    if v == val then
+	       flags_str = v .. " "
+	    end
 	 end
       end
       if flags_str == "" then flags_str = "-nogui -stderr " end

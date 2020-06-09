@@ -8,6 +8,7 @@
 	- main.lua - look for arg[1] before running any test
 	
 	#CHANGED
+	- pdtest.lua - refactored "flag checker"
 	- logs - now capture date, platform and flags
 	- main.lua - now passes table containing tests to pdtest.lua
 	- pdtest.lua - now prints expected vs actual when test fails
