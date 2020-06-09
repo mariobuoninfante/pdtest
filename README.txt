@@ -44,6 +44,28 @@ It has 2 mandatory fields:
 
 All the other fields must be placed in between these 2 (see text files in /tests for some example).
 
+The order of the fields in the .txt file should match the order of execution in the .pd file.
+That means if the Pd patch sends the following messages:
+
+1.teststart
+2. append
+3. float 23
+4. banana
+5. testend
+
+the correspondent test .txt file should be:
+
+```
+teststart
+append
+float 23
+banana
+testend
+```
+
+to be noticed that the Pd test patch must always start the test sending "teststart" and finish it sending "testend". 
+
+
 Both "suite.txt" and the test files (.txt) can't contain "newline" and "carriage return" ("\n" and "\r") due to the way that they are parsed.
 Comments are allowed and start with "--" (ie "-- This is a comment!").
 

@@ -5,6 +5,7 @@
 	- main.lua - look for arg[1] before running any test
 	
 	#CHANGED
+	- README.txt - added more info about the test architecture
 	- pd test patches - placed all abstractions in /modules
 	- pdtest.lua - now receives an arg instead of using arg[1]
 
