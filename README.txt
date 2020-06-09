@@ -25,6 +25,8 @@ where "platform" is:
 - macos
 - win
 
+It is also possible to pass flags to Pd (ie -gui, -noaudio, etc. - not all are supported).
+
 
 
 SUITE AND TESTS
