@@ -21,7 +21,6 @@ local flags = {}
 if #arg > 1 then
    for i = 2, #arg do
       table.insert(flags, arg[i])
-      print(arg[i])
    end
 end
 

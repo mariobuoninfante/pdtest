@@ -16,7 +16,7 @@ function pdtest.run(tests, platform, flags)
       for k, v in ipairs(flags) do
 	 for key, val in ipairs(pdflags) do
 	    if v == val then
-	       flags_str = v .. " "
+	       flags_str = flags_str .. " " ..  v .. " "
 	    end
 	 end
       end

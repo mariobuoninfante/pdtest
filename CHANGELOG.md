@@ -1,3 +1,12 @@
+	2020-06-10
+	---
+	#ADDED
+
+
+	#CHANGED
+	- main.lua - flags are not printed on the console anymore since the check happens in pdtest.lua
+	- pdtest.lua - fixed issue where only one flag was considered
+
 	2020-06-09
 	---
 	#ADDED
