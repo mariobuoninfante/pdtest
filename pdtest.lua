@@ -134,7 +134,7 @@ function pdtest.get_fields(filename)
    local line = "--"
    while line ~= nil do
       -- skip comments
-      if string.sub(line, 1, 2) ~= "--" then
+      if string.sub(line, 1, 2) ~= "--" and line ~= "" then
 	 table.insert(expected, line)
       end
       
