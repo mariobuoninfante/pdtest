@@ -1,6 +1,7 @@
 	2020-06-10
 	---
 	#ADDED
+	- pdtest.lua - run() now grabs Pd version and add it to the log
 	- pdtest.lua - possibility to redirect stderr to stdout
 	- float-int_t test
 

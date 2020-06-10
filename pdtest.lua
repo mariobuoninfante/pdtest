@@ -1,5 +1,27 @@
 local pdtest = {}
 
+local function parse_version(v)
+   -- "pd -version" should return something like:
+   -- Pd-0.49.1 ("") compiled 23:45:54 Jul 23 2019
+
+   if v == nil then return "" end
+
+   -- look for the aphostrope in the expected string - we can't look for "("
+   local v_end = string.find(v, '"')
+   if type(v_end) == "number" then
+      v_end = v_end - 2
+      if v_end > 0 then
+	 return string.sub(v, 1, v_end)
+      else
+	 return ""
+      end
+   else
+      return ""
+   end
+   
+end
+
+
 
 
 function pdtest.run(tests, platform, flags)
@@ -34,9 +56,10 @@ function pdtest.run(tests, platform, flags)
 
    
    local pd
-   local timestamp = os.date("%Y%m%d_%H_%M_%S")   
+   local timestamp = os.date("%Y%m%d_%H_%M_%S")
+   local version = pdtest.pd_version()
    local log = io.open("./logs/log_" .. timestamp .. ".txt", "w")   
-   log:write("DATE: " .. os.date("%Y-%m-%d - %H:%M:%S") .. "\nPLATFORM: " .. platform .. "\nFLAGS: " .. flags_str .. "\n\n")
+   log:write("DATE: " .. os.date("%Y-%m-%d - %H:%M:%S") .. "\nPLATFORM: " .. platform .. "\nVERSION: " .. version .. "\nFLAGS: " .. flags_str .. "\n\n")
 
 
    
@@ -179,6 +202,27 @@ function pdtest.get_fields(filename)
 
    return expected
 end
+
+
+
+function pdtest.pd_version()
+   local pd = io.popen("pd -version 2>&1")
+   local version = ""
+   
+   local line = ""
+   while line ~= nil do
+      if line ~= "" then
+	 version = parse_version(line)
+      end
+      line = pd:read("l")
+   end
+
+   pd:close()
+
+   return version
+end
+
+
 
 
 return pdtest
