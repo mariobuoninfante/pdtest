@@ -4,6 +4,7 @@
 	- float-int_t test
 
 	#CHANGED
+	- /tests - fixed pdcontrol_t.pd not closing and float-int_t.pd always closing regardless "autoexitoff" 
 	- improved logs formatting
 	- README.txt / INFO - fixed Method to open "autoclosing" test patches
 	- main.lua - flags are not printed on the console anymore since the check happens in pdtest.lua

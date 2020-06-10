@@ -29,7 +29,7 @@ function pdtest.run(tests, platform, flags)
    local log = io.open("./logs/log_" .. timestamp .. ".txt", "w")   
    log:write("DATE: " .. os.date("%Y-%m-%d - %H:%M:%S") .. "\nPLATFORM: " .. platform .. "\nFLAGS: " .. flags_str .. "\n\n")
    
-   for k, testname in ipairs(tests) do
+    for k, testname in ipairs(tests) do
       local patchname = "./tests/" .. testname .. ".pd"
       local cmdlinux = "pd " .. flags_str ..patchname
       local cmdmac = "/Applications/Pd-0.51-0.app/Contents/Resources/bin/pd " .. flags_str .. patchname

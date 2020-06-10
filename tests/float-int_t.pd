@@ -19,6 +19,7 @@
 #X symbolatom 475 256 10 0 0 0 - - -;
 #X obj 475 279 f;
 #X obj 185 165 t b b b b b b;
+#X obj 185 412 del 250;
 #X obj 185 439 EXIT;
 #X connect 0 0 1 0;
 #X connect 1 0 18 0;
@@ -43,3 +44,4 @@
 #X connect 18 3 11 0;
 #X connect 18 4 13 0;
 #X connect 18 5 15 0;
+#X connect 19 0 20 0;
