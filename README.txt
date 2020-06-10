@@ -68,8 +68,7 @@ testend
 to be noticed that the Pd test patch must always start the test sending "teststart" and finish it sending "testend". 
 
 
-Both "suite.txt" and the test files (.txt) can't contain "newline" and "carriage return" ("\n" and "\r") due to the way that they are parsed.
-Comments are allowed and start with "--" (ie "-- This is a comment!").
+Both in "suite.txt" and the test .txt files, comments are allowed and start with "--" (ie "-- This is a comment!").
 
 In the Pd patch (ie mytest_t.pd) results are passed to Lua via [stdout -cr].
 
