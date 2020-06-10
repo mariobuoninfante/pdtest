@@ -1,9 +1,11 @@
 	2020-06-10
 	---
 	#ADDED
+	- pdtest.lua - possibility to redirect stderr to stdout
 	- float-int_t test
 
 	#CHANGED
+	- logs - improved log layout
 	- /tests - fixed pdcontrol_t.pd not closing and float-int_t.pd always closing regardless "autoexitoff" 
 	- improved logs formatting
 	- README.txt / INFO - fixed Method to open "autoclosing" test patches

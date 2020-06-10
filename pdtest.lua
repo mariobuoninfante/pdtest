@@ -6,17 +6,26 @@ function pdtest.run(tests, platform, flags)
 
    flags = flags or {}
 
+   local redirect_stderr = ""
+   
    -- check flags to pass to Pd 
    local pdflags = {"-nogui", "-gui", "-nomidi", "-stderr", "-noaudio", "-r"} 
    local flags_str = ""
    if #flags == 0 then
       flags_str = "-nogui -stderr "
+
+      -- redirect stderr to stdout
+      redirect_stderr = "2>&1"
+
    else
       -- surely not the most elegant way to do this
       for k, v in ipairs(flags) do
 	 for key, val in ipairs(pdflags) do
 	    if v == val then
 	       flags_str = flags_str .. " " ..  v .. " "
+
+	       -- redirect stderr to stdout
+	       if v == "-stderr" then redirect_stderr = "2>&1" end 
 	    end
 	 end
       end
@@ -28,14 +37,19 @@ function pdtest.run(tests, platform, flags)
    local timestamp = os.date("%Y%m%d_%H_%M_%S")   
    local log = io.open("./logs/log_" .. timestamp .. ".txt", "w")   
    log:write("DATE: " .. os.date("%Y-%m-%d - %H:%M:%S") .. "\nPLATFORM: " .. platform .. "\nFLAGS: " .. flags_str .. "\n\n")
+
+
    
-    for k, testname in ipairs(tests) do
+   -------------------
+   -- run the tests --
+   -------------------
+
+   for k, testname in ipairs(tests) do
       local patchname = "./tests/" .. testname .. ".pd"
-      local cmdlinux = "pd " .. flags_str ..patchname
-      local cmdmac = "/Applications/Pd-0.51-0.app/Contents/Resources/bin/pd " .. flags_str .. patchname
+      local cmdlinux = "pd " .. flags_str .. patchname .. " " .. redirect_stderr
+      local cmdmac = "/Applications/Pd-0.51-0.app/Contents/Resources/bin/pd " .. flags_str .. patchname .. " " .. redirect_stderr
       
-      log:write(string.format("TEST: %s ", testname))
-      
+      log:write(string.format("\n---\nTEST: %s ", testname))
       io.write(string.format("\n---\n%s\n---\n", testname))
       
       -- io.popen() is system depedent
@@ -57,12 +71,15 @@ function pdtest.run(tests, platform, flags)
 
       -- where we collect what Pd actually sends us
       local actual = {}
+      local pderr = {}
 
 
       
+
       ---------------------
       -- collect from Pd --
       ---------------------
+
       local line = ""
       local start = false
       local c = 0
@@ -74,6 +91,11 @@ function pdtest.run(tests, platform, flags)
 	    c = c + 1
 	    actual[c] = line
 	 end
+
+	 if string.find(line, "error:") ~= nil then
+	    table.insert(pderr, line)
+	 end
+	 
 	 line = pd:read()
       end
 
@@ -82,8 +104,9 @@ function pdtest.run(tests, platform, flags)
       -----------------------------
       -- verify things collected --
       -----------------------------
+
       local failed = {}
-      
+
       -- check that we actually got something from Pd
       if #actual > 0 then
 	 for k, v in ipairs(expected) do
@@ -92,9 +115,7 @@ function pdtest.run(tests, platform, flags)
 	    -- if "actual" is different from "expected" capture both
 	    if result == false then table.insert(failed, {v, actual[k]}) end
 	 end
-
-
-	 -- we should generate a log, but let's just print for now
+	 
 	 if #failed > 0 then
 	    io.write("\nFAILED\n")
 	    log:write("FAILED\n")
@@ -108,12 +129,21 @@ function pdtest.run(tests, platform, flags)
 	    log:write("PASSED\n")
 	 end
 
-	 -- if for whatever reason we haven't got anythig from Pd
+	 -- if for whatever reason we haven't got anything from Pd
       else
 	 io.write("\nTEST FAILED - getting nothing from Pd\n")
 	 log:write("FAILED - getting nothing from Pd\n")
       end
 
+      -- log Pd stderr first
+      if #pderr > 0 then
+	 log:write("\nPd errors\n")
+	 for k, v in ipairs(pderr) do
+	    io.write("Pd " .. v, "\n")
+	    log:write(v .. "\n")
+	 end
+      end
+      
    end
 
    log:close()
