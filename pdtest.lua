@@ -27,14 +27,14 @@ function pdtest.run(tests, platform, flags)
    local pd
    local timestamp = os.date("%Y%m%d_%H_%M_%S")   
    local log = io.open("./logs/log_" .. timestamp .. ".txt", "w")   
-   log:write("DATE: " .. os.date("%Y-%m-%d - %H:%M:%S") .. "\nPLATFORM: " .. platform .. "\nFLAGS: " .. flags_str .. "\n")
+   log:write("DATE: " .. os.date("%Y-%m-%d - %H:%M:%S") .. "\nPLATFORM: " .. platform .. "\nFLAGS: " .. flags_str .. "\n\n")
    
    for k, testname in ipairs(tests) do
       local patchname = "./tests/" .. testname .. ".pd"
       local cmdlinux = "pd " .. flags_str ..patchname
       local cmdmac = "/Applications/Pd-0.51-0.app/Contents/Resources/bin/pd " .. flags_str .. patchname
-
-      log:write(string.format("\n---\nTEST: %s\n---\n", testname))
+      
+      log:write(string.format("TEST: %s ", testname))
       
       io.write(string.format("\n---\n%s\n---\n", testname))
       
@@ -96,19 +96,22 @@ function pdtest.run(tests, platform, flags)
 
 	 -- we should generate a log, but let's just print for now
 	 if #failed > 0 then
+	    io.write("\nFAILED\n")
+	    log:write("FAILED\n")
 	    for i=1, #failed do
-	       io.write(string.format("\nTEST FAILED - expected: %s | actual: %s\n\n", failed[i][1], failed[i][2]))
-	       log:write(string.format("TEST FAILED - expected: %s | actual: %s\n", failed[i][1], failed[i][2]))
+	       io.write(string.format("- expected: %s | actual: %s\n", failed[i][1], failed[i][2]))
+	       log:write(string.format("- expected: %s | actual: %s\n", failed[i][1], failed[i][2]))
 	    end
+	    io.write("\n")
 	 else
 	    io.write("\nTEST PASSED\n\n")
-	    log:write("TEST PASSED\n")
+	    log:write("PASSED\n")
 	 end
 
 	 -- if for whatever reason we haven't got anythig from Pd
       else
 	 io.write("\nTEST FAILED - getting nothing from Pd\n")
-	 log:write("TEST FAILED - getting nothing from Pd\n")
+	 log:write("FAILED - getting nothing from Pd\n")
       end
 
    end

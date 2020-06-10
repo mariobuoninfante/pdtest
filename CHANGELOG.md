@@ -1,9 +1,10 @@
 	2020-06-10
 	---
 	#ADDED
-
+	- float-int_t test
 
 	#CHANGED
+	- improved logs formatting
 	- README.txt / INFO - fixed Method to open "autoclosing" test patches
 	- main.lua - flags are not printed on the console anymore since the check happens in pdtest.lua
 	- pdtest.lua - fixed issue where only one flag was considered

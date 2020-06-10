@@ -1,0 +1,8 @@
+-- I'm a comment
+teststart
+float 42.23
+float -100
+float -100
+float 2.3
+float 2
+testend
