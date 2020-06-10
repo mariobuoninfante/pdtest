@@ -82,8 +82,8 @@ All the test patches will automatically quit Pd after few seconds, if you want t
 
 Method 1
   - open the patch in a text editor
-  - search for "quit" and turn it into "/quit" (or whatever else that is not "quit")
-  - don't forget to set it back to "quit" once the changes have been completed
+  - search for "EXIT" and turn it into "/EXIT" (or whatever else that is not "EXIT")
+  - don't forget to set it back to "EXIT" once the changes have been completed
 
 Method 2
   - launch the patch from terminal using the following command: 
