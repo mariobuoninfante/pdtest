@@ -6,6 +6,8 @@
 	- float-int_t test
 
 	#CHANGED
+	- pdtest.lua - run() started code refactoring 
+	- pdtest.lua - pd_version() now gets "platform" argument
 	- logs - improved log layout
 	- /tests - fixed pdcontrol_t.pd not closing and float-int_t.pd always closing regardless "autoexitoff" 
 	- improved logs formatting

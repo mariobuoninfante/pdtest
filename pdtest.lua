@@ -6,7 +6,7 @@ local function parse_version(v)
 
    if v == nil then return "" end
 
-   -- look for the aphostrope in the expected string - we can't look for "("
+   -- look for the apostrophe in the expected string - we can't look for "("
    local v_end = string.find(v, '"')
    if type(v_end) == "number" then
       v_end = v_end - 2
@@ -22,17 +22,36 @@ local function parse_version(v)
 end
 
 
+local function check_platform(platform)   
+
+   local cmdlinux = "pd "
+   local cmdmac = "/Applications/Pd-0.51-0.app/Contents/Resources/bin/pd "
+      
+   local pd_cmd = ""  
+   -- an alternative would be os.execute("cmd > ./log.txt") and then check the log
+   if platform == "linux" then
+      pd_cmd = cmdlinux 
+   elseif platform == "macos" then
+      pd_cmd = cmdmac
+   elseif platform == "win" then
+      print("well, we're not equipped for this yet!")
+      os.exit()
+   else
+      print("First argument must be OS type:\nie: linux, macos, win")
+      os.exit()
+   end
+
+   return pd_cmd
+end
 
 
-function pdtest.run(tests, platform, flags)
 
-   flags = flags or {}
-
-   local redirect_stderr = ""
+local function check_flags(flags)
    
    -- check flags to pass to Pd 
    local pdflags = {"-nogui", "-gui", "-nomidi", "-stderr", "-noaudio", "-r"} 
-   local flags_str = ""
+   local flags_str, redirect_stderr = "", ""
+
    if #flags == 0 then
       flags_str = "-nogui -stderr "
 
@@ -40,7 +59,6 @@ function pdtest.run(tests, platform, flags)
       redirect_stderr = "2>&1"
 
    else
-      -- surely not the most elegant way to do this
       for k, v in ipairs(flags) do
 	 for key, val in ipairs(pdflags) do
 	    if v == val then
@@ -54,10 +72,25 @@ function pdtest.run(tests, platform, flags)
       if flags_str == "" then flags_str = "-nogui -stderr " end
    end
 
+   return flags_str, redirect_stderr
+end
+
+
+
+
+function pdtest.run(tests, platform, flags)
+      
+   local pd_cmd = check_platform(platform)
+   
+   flags = flags or {}
+
+   local flags_str, redirect_stderr = check_flags(flags)
+   
+
    
    local pd
    local timestamp = os.date("%Y%m%d_%H_%M_%S")
-   local version = pdtest.pd_version()
+   local version = pdtest.pd_version(pd_cmd)
    local log = io.open("./logs/log_" .. timestamp .. ".txt", "w")   
    log:write("DATE: " .. os.date("%Y-%m-%d - %H:%M:%S") .. "\nPLATFORM: " .. platform .. "\nVERSION: " .. version .. "\nFLAGS: " .. flags_str .. "\n\n")
 
@@ -69,26 +102,17 @@ function pdtest.run(tests, platform, flags)
 
    for k, testname in ipairs(tests) do
       local patchname = "./tests/" .. testname .. ".pd"
-      local cmdlinux = "pd " .. flags_str .. patchname .. " " .. redirect_stderr
-      local cmdmac = "/Applications/Pd-0.51-0.app/Contents/Resources/bin/pd " .. flags_str .. patchname .. " " .. redirect_stderr
+      local actual_cmd = pd_cmd .. flags_str .. patchname .. " " .. redirect_stderr
       
       log:write(string.format("\n---\nTEST: %s ", testname))
       io.write(string.format("\n---\n%s\n---\n", testname))
-      
+
+      -- launch Pd
       -- io.popen() is system depedent
       -- an alternative would be os.execute("cmd > ./log.txt") and then check the log
-      if platform == "linux" then
-	 pd = assert(io.popen(cmdlinux))
-      elseif platform == "macos" then
-	 pd = assert(io.popen(cmdmac))
-      elseif platform == "win" then
-	 print("well, we're not equipped for this yet!")
-	 os.exit()
-      else
-	 print("First argument must be OS type:\nie: linux, macos, win")
-	 os.exit()
-      end
+      pd = assert(io.popen(actual_cmd))
 
+      
       -- expected msg from Pd
       local expected = pdtest.get_fields("./tests/" .. testname .. ".txt")
 
@@ -115,6 +139,7 @@ function pdtest.run(tests, platform, flags)
 	    actual[c] = line
 	 end
 
+	 -- intercept stderr
 	 if string.find(line, "error:") ~= nil then
 	    table.insert(pderr, line)
 	 end
@@ -205,8 +230,8 @@ end
 
 
 
-function pdtest.pd_version()
-   local pd = io.popen("pd -version 2>&1")
+function pdtest.pd_version(cmd)
+   local pd = io.popen(cmd .. "-version 2>&1")
    local version = ""
    
    local line = ""
