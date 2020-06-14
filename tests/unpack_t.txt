@@ -1,0 +1,5 @@
+-- I'm a comment
+teststart
+symbol test
+float 1
+testend
