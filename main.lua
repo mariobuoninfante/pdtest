@@ -9,8 +9,7 @@ end
 -- the OS in use
 local platform = arg[1]
 
-local tests = assert(pdtest.get_fields("./suite.txt"))
-
+local tests = assert(pdtest.get_fields("./suite.txt"), "PROBLEM OPENING: suite.txt")
 
 print("TESTS:")
 for k, v in ipairs(tests) do print(k, v) end

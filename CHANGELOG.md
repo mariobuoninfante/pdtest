@@ -1,3 +1,12 @@
+	2020-06-15
+	---
+	#ADDED
+
+	#CHANGED
+	- main.lua - added assert when opening suite.txt
+	- pdtest.lua - get_fields() return false if no file has been opened - in case txt test file is not found test is skipped - nothing about .pd files is yet in place
+
+	
 	2020-06-10
 	---
 	#ADDED

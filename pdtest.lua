@@ -115,6 +115,11 @@ function pdtest.run(tests, platform, flags)
       
       -- expected msg from Pd
       local expected = pdtest.get_fields("./tests/" .. testname .. ".txt")
+      if expected == false then
+	 log:write("SKIPPED\n")
+	 io.write("\nSKIPPED\n")
+	 goto continue
+      end
 
       -- where we collect what Pd actually sends us
       local actual = {}
@@ -191,7 +196,7 @@ function pdtest.run(tests, platform, flags)
 	    log:write(v .. "\n")
 	 end
       end
-      
+      ::continue::
    end
 
    log:close()
@@ -206,10 +211,12 @@ function pdtest.get_fields(filename)
    local file
    
    if filename == nil then
-      file = assert(io.open("./expected.txt"))
+      file = io.open("./expected.txt")
    else
-      file = assert(io.open(filename))
+      file = io.open(filename)
    end
+   if file == nil then return false end
+
    
    local expected = {}
    local line = "--"
