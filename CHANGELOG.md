@@ -1,3 +1,13 @@
+	2020-06-22
+	---
+	#ADDED
+	- pdtest.lua - added check_test() to verify that test files are in the /tests folder
+
+	#CHANGED
+	- pdtest.lua - run() now checks that there is something in the "expected" results
+	- pdtest.lua - check_flags() now check for argument passed
+
+
 	2020-06-15
 	---
 	#ADDED

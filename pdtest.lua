@@ -28,7 +28,6 @@ local function check_platform(platform)
    local cmdmac = "/Applications/Pd-0.51-0.app/Contents/Resources/bin/pd "
       
    local pd_cmd = ""  
-   -- an alternative would be os.execute("cmd > ./log.txt") and then check the log
    if platform == "linux" then
       pd_cmd = cmdlinux 
    elseif platform == "macos" then
@@ -47,6 +46,8 @@ end
 
 
 local function check_flags(flags)
+
+   flags = flags or {}
    
    -- check flags to pass to Pd 
    local pdflags = {"-nogui", "-gui", "-nomidi", "-stderr", "-noaudio", "-r"} 
@@ -86,7 +87,6 @@ function pdtest.run(tests, platform, flags)
 
    local flags_str, redirect_stderr = check_flags(flags)
    
-
    
    local pd
    local timestamp = os.date("%Y%m%d_%H_%M_%S")
@@ -101,25 +101,39 @@ function pdtest.run(tests, platform, flags)
    -------------------
 
    for k, testname in ipairs(tests) do
+      
       local patchname = "./tests/" .. testname .. ".pd"
       local actual_cmd = pd_cmd .. flags_str .. patchname .. " " .. redirect_stderr
       
       log:write(string.format("\n---\nTEST: %s ", testname))
       io.write(string.format("\n---\n%s\n---\n", testname))
 
+      
+      -- check that testfiles actually exists
+      local check_filename = pdtest.check_test(testname)
+      if check_filename == false then
+	 log:write("SKIPPED\n")
+	 io.write("\nSKIPPED\n")
+	 goto continue
+      end
+
+      
+      
       -- launch Pd
       -- io.popen() is system depedent
       -- an alternative would be os.execute("cmd > ./log.txt") and then check the log
       pd = assert(io.popen(actual_cmd))
 
-      
+
       -- expected msg from Pd
       local expected = pdtest.get_fields("./tests/" .. testname .. ".txt")
-      if expected == false then
+      if #expected == 0 then
 	 log:write("SKIPPED\n")
 	 io.write("\nSKIPPED\n")
 	 goto continue
       end
+
+      
 
       -- where we collect what Pd actually sends us
       local actual = {}
@@ -205,13 +219,40 @@ end
 
 
 
+function pdtest.check_test(filename)
+   -- check if both filename.txt and filename.pd exist
+   -- if any of the 2 is not there return false otherwise true
+   
+   if filename == nil then
+      return false
+   end
+
+   local textfile = io.open("./tests/" .. filename .. ".txt")
+   local pdfile = io.open("./tests/" .. filename .. ".pd")
+
+   -- if any of the file is not in the folder
+   if textfile == nil or pdfile == nil then
+      return false
+   end
+
+
+   -- if both the files are in the folder
+   textfile:close()
+   pdfile:close()
+   
+   return true
+   
+end
+
+
+
 function pdtest.get_fields(filename)
    -- get test expected results from test .txt file
 
    local file
    
    if filename == nil then
-      file = io.open("./expected.txt")
+      return false
    else
       file = io.open(filename)
    end
